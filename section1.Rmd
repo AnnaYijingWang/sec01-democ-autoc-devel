@@ -81,8 +81,9 @@ table(anrr$dem)
 
 Now add as an argument to the function `table` the option `useNA = "always"`. How many missing values does the variable `dem` has?
 
-
-
+```{r}
+table(anrr$dem, useNA = "always")
+```
 
 ## Question 6
 
@@ -107,8 +108,10 @@ anrr <- anrr |>
 
 Check the `class` of the new variable and corroborate that it shares the same number of democracies and autocracies, but that we have no `NA`s.
 
-
-
+```{r}
+class(anrr$dem_label)
+table(anrr$dem_label)
+```
 
 
 
@@ -118,6 +121,11 @@ Now we can start comparing how rich (or poor) are democracies relative to autocr
 
 Using `ggplot`, plot a histogram of the variable `gdppc`. What can you say about the distribution of the variable?
 
+```{r}
+library(ggplot2)
+ggplot(anrr) + 
+  geom_histogram(aes(x=gdppc))
+```
 
 
 
@@ -127,21 +135,33 @@ Using `ggplot`, plot a histogram of the variable `gdppc`. What can you say about
 The plot above is showing the distribution of income for both democracies and autocracies together. Pass the argument `fill = dem_label` to the `aes()` to see how the distributions differ by political regime. From this plot, can you tell if democracies are richer or poorer than autocracies?
 
 
+```{r}
+ggplot(anrr) + 
+  geom_histogram(aes(x=gdppc, fill = dem_label))
+```
+#democracies are richer than autocracies
 
 ## Question 9: Log scale
 
 When the distribution of our variable is highly skewed, we often transform the variable by a logarithmic scale (as seen in Tutorial 1). Make the same plot as in 2 above, but adding `scale_x_log10(labels = scales::dollar)` as an argument to the `ggplot`. Does this transformation makes clearer the income differences between democracies and autocracies?  
 
-
+```{r}
+ggplot(anrr) + 
+  geom_histogram(aes(x=gdppc, fill=dem_label)) +
+  scale_x_log10(labels = scales::dollar)
+```
 
 ## Question 10: Comparing with boxplot
 
 An alternative way to get to the question is to compare the median income between political regimes. We can do this using `geom_boxplot`. What does this plot tell you about the distribution of income in democracies when compared to autocracies?
 
-
+```{r}
+ggplot(anrr) + 
+  geom_boxplot(aes(x=gdppc, fill=dem_label)) +
+  scale_x_log10(labels = scales::dollar)
+```
 
 ## Question 11: Comparing by country groups
 
-Finally, do these patterns vary by world region? Add `facet_wrap(~region)` to your `ggplot` to see the division by geographic/economic region. Region acronyms are AFR: Africa , EAP: East Asia and the Pacific, ECA: Europe and Central Asia, INL: OECD and high income countries, LAC: Latin America and Caribbean, MNA: Middle East and North Africa, SAS: South Asia. Can you find a region of the world where the median income of autocracies is higher than that of democracies?  
-
+Finally, do these patterns vary by world region? Add `facet_wrap(~region)` to your `ggplot` to see the division by geographic/economic region. Region acronyms are AFR: Africa , EAP: East Asia and the Pacific, ECA: Europe and Central Asia, INL: OECD and high income countries, LAC: Latin America and Caribbean, MNA: Middle East and North Africa, SAS: South Asia. Can you find a region of the world where the median income of autocracies is higher than that of democracies?
 
